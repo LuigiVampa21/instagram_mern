@@ -3,14 +3,19 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import 'express-async-errors';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { checkToken } from './middleware/auth.middleware.js';
 
 // FUNCTIONS
 import { connectDB } from './utils/db/connectDB.js';
 
+// ROUTES
+import authRouter from './routes/auth.route.js';
+import userRoute from './routes/user.route.js';
 
 // CONFIGURATIONS
 const __filename = fileURLToPath(import.meta.url);
@@ -26,6 +31,16 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 app.use("/assets", express.static(path.join(__dirname, 'public/assets')));
+
+// ROUTES
+app.get('/', (req, res) => {
+    res.send("Welcome to the instagram API")
+});
+
+app.use('/api/v1/instagram/auth', authRouter);
+
+app.use(checkToken);
+app.use('/api/v1/instagram/users', userRoute);
 
 
 
