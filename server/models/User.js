@@ -24,15 +24,18 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
       min: 5,
+      select: false,
     },
     picturePath: {
       type: String,
-      default: "",
+      default: "default.png",
     },
-    friends: {
-      type: Array,
-      default: [],
-    },
+    friends: [{
+      // type: Array,
+      // default: [],
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    }],
     location: String,
     occupation: String,
     viewedProfile: Number,

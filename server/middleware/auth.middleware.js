@@ -4,7 +4,6 @@ import { StatusCodes } from 'http-status-codes';
 export const checkToken = async (req, res, next) => {
     try {
         const token = req.header("Authorization").split(' ')[1];
-        console.log(token);
         if(!token){
             throw new Error("Sorry no token found");
         }
@@ -12,7 +11,6 @@ export const checkToken = async (req, res, next) => {
         if(!isValid){
             throw new Error("Token not valid or expired");
         }
-        console.log(isValid);
         req.user = isValid;
         next();
     } catch (err) {
