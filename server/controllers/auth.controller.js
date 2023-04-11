@@ -38,7 +38,7 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   const { email, password } = req.body;
-  const user = await User.findOne({ email }).select('password');
+  const _user = await User.findOne({ email }).select('+password');
   if (!user) {
     throw new Error("This user does not exists");
   }
@@ -47,13 +47,22 @@ export const login = async (req, res) => {
     throw new Error("This password does not match");
   }
 
-  const token = generateToken({ id: user.id, email: user.email });
+  const token = generateToken({ id: _user.id, email: _user.email });
+
+  const user = {
+    firstName: _user.firstName,
+    lastName: _user.lastName,
+    email: _user.email,
+    picturePath: _user.picturePath,
+    friends: _user.friends,
+    location: _user.location,
+    occupation: _user.occupation,
+    viewedProfile: _user.viewedProfile,
+    impressions: _user.impressions,
+  }
 
   res.status(StatusCodes.OK).json({
     token,
-    user: {
-      id: user.id,
-      email: user.email
-    }
+    user
   });
 }

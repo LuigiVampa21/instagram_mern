@@ -12,7 +12,7 @@ export const getUserById = async (req, res) => {
         throw new Error("no user found with that id");
     }
     res.status(StatusCodes.OK).json({
-        user: { id: user.id, email: user.email }
+        user
     })
 }
 
