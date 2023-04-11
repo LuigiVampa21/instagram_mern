@@ -5,16 +5,18 @@ import { isMatch } from '../utils/auth/passwordMatch.js';
 import { generateToken } from '../utils/auth/generateToken.js';
 
 export const register = async (req, res) => {
+  const file = req.files[0];
   const {
     firstName,
     lastName,
     email,
     password,
-    picturePath,
     friends,
     location,
     occupation,
   } = req.body;
+
+  const picturePath = file.filename
 
   const hashedPassword = await hashPassword(password);
 
