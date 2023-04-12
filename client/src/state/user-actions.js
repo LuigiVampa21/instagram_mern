@@ -15,22 +15,23 @@ export const getUserFriends = (id, token) => {
     return async dispatch => {
         try {
             const response = await axios.get(process.env.REACT_APP_BASE_URL + '/users/' + id + '/friends', headersConfig(token));
-            const { data: friends } = response;
+            const { data } = response;
+            const { friends } = data;
             console.log(friends);
-            // dispatch(setPost({ post: newPost }));
+            dispatch(setFriends({ friends }))
         } catch (err) {
             console.log(err);
         }
     }
 }
 
-export const patchFriend = (id, post, token) => {
+export const _patchFriend = (id, friendID, token) => {
     return async dispatch => {
         try {
-            // const response = await axios.post(process.env.REACT_APP_BASE_URL + '/posts/' + id, post, headersConfig(token));
-            // const { data: newPost } = response;
-            // console.log(newPost);
-            // dispatch(setPost({ post: newPost }));
+            const response = await axios.patch(process.env.REACT_APP_BASE_URL + '/users/' + id + '/' + friendID, {}, headersConfig(token));
+            const { data } = response;
+            const { friends } = data;
+            dispatch(setFriends({ friends }))
         } catch (err) {
             console.log(err);
         }

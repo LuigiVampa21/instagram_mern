@@ -26,7 +26,7 @@ export const getUserFriends = async (req, res) => {
         throw new Error("no user found with that id");
     }
     res.status(StatusCodes.OK).json({
-        user: { friends: user.friends }
+        friends: user.friends
     })
 }
 
@@ -42,15 +42,6 @@ export const updateUserRelationship = async (req, res) => {
     }
     const friendsArray = [...currentUser.friends];
     const alreadyFriends = friendsArray.some(friend => String(friend._id) == friendID);
-    // let alreadyFriends;
-    //     for(const friend of currentUser.friends){
-    //         console.log(String(friend._id));
-    //     }
-
-    // res.status(200).json({
-    //     friends: currentUser.friends
-    // })
-
 
     if (!alreadyFriends) {
         // add friend
