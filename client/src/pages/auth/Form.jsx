@@ -86,8 +86,7 @@ const Form = props => {
             formData.append("picturePath", values.picture.name);
         }
         try {
-            const response = await axios.post(process.env.REACT_APP_BASE_URL + '/auth/register', formData);
-            const { data } = response;
+            await axios.post(process.env.REACT_APP_BASE_URL + '/auth/register', formData);
             onSubmitProps.resetForm();
             setPageType("login");
             props.onChangeType();

@@ -5,12 +5,12 @@ import {
     ShareOutlined,
 } from "@mui/icons-material";
 import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
-import axios from "axios";
 import FlexBetween from "components/FlexBetween";
 //   import Friend from "components/Friend";
 import WidgetWrapper from "components/WidgetWrapper";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { _patchLike } from "state/post-actions";
 
 // import { setPost } from "state";
 
@@ -33,39 +33,28 @@ const PostWidget =
         const dispatch = useDispatch();
         const token = useSelector((state) => state.token);
         const loggedInUserId = useSelector((state) => state.user._id);
-        const isLiked = post.likes.some(like => like == loggedInUserId);
-        const likeCount = post.likes.length;
+        const [isLiked, setIsLiked] = useState(post.likes.some(like => like == loggedInUserId));
+        const [likeCount, setLikeCount] = useState(post.likes.length);
+        // const like = like => like == loggedInUserId
+        // setIsLiked(post.likes.some(like => like == loggedInUserId));
+        // const likeCount = post.likes.length;
 
         const { palette } = useTheme();
         const main = palette.neutral.main;
         const primary = palette.primary.main;
 
         const patchLike = async () => {
-            //   const response = await fetch(`http://localhost:3001/posts/${postId}/like`, {
-            //     method: "PATCH",
-            //     headers: {
-            //       Authorization: `Bearer ${token}`,
-            //       "Content-Type": "application/json",
-            //     },
-            //     body: JSON.stringify({ userId: loggedInUserId }),
-            //   });
-            //   const updatedPost = await response.json();
-            //   dispatch(setPost({ post: updatedPost }));
-            try {
-                const response = await axios.patch(
-                    process.env.REACT_APP_BASE_URL + '/posts/' + id + '/user',
-                    { userID },
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            "Content-Type": "application/json",
-                        }
-                    })
-                const { data: userPosts } = response;
-                console.log(userPosts);
-            } catch (err) {
-                console.log(err);
+            if(!isLiked){
+                setIsLiked(true);
+                const newCount = likeCount + 1;
+                setLikeCount(newCount);
             }
+            if(isLiked){
+                setIsLiked(false);
+                const newCount = likeCount - 1; 
+                setLikeCount(newCount);
+            }
+            dispatch(_patchLike(post._id, loggedInUserId, token));
         };
 
         return (

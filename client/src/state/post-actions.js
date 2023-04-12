@@ -14,13 +14,26 @@ export const sendPost = (id, post, token) => {
         try {
             const response = await axios.post(process.env.REACT_APP_BASE_URL + '/posts/' + id, post, headersConfig(token));
             const { data: newPost } = response;
-            console.log(newPost);
+            // console.log(newPost);
             dispatch(setPost({ post: newPost }));
         } catch (err) {
             console.log(err);
         }
     }
 }
+
+export const _patchLike = (id, userID, token) => {
+    return async dispatch => {
+        try {
+            const response = await axios.patch(process.env.REACT_APP_BASE_URL + '/posts/' + id + '/like', { userID }, headersConfig(token))
+            const { data: updatedPost } = response;
+            console.log(updatedPost);
+            dispatch(setPost({ post: updatedPost }))
+        } catch (err) {
+            console.log(err);
+        }
+    }
+} 
 
 export const getFeedPosts = (token) => {
     return async dispatch => {
@@ -48,4 +61,3 @@ export const _getUserPosts = (id, token) => {
         }
     }
 }
- 
