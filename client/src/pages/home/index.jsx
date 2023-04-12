@@ -3,6 +3,7 @@ import NavBar from 'pages/navBar';
 import MyPostWidget from 'pages/widgets/MyPostWidget';
 import PostsWidget from 'pages/widgets/PostsWidget';
 import UserWidget from 'pages/widgets/UserWidget';
+import FriendListWidget from 'pages/widgets/FriendListWidget';
 import React from 'react'
 import { useSelector } from 'react-redux';
 
@@ -39,7 +40,7 @@ const HomePage = () => {
           <Box flexBasis="26%">
             {/* <AdvertWidget /> */}
             <Box m="2rem 0" />
-            {/* <FriendListWidget userID={_id} /> */}
+            <FriendListWidget userID={_id} />
           </Box>
         )}
       </Box>

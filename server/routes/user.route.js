@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.route('/:id').get(getUserById);
 router.route('/:id/friends').get(getUserFriends);
-router.route('/:id/friendID').patch(updateUserRelationship);
+router.route('/:id/:friendID').patch(updateUserRelationship);
 
 export default router;

@@ -16,7 +16,7 @@ export const getUserById = async (req, res) => {
     })
 }
 
-export const getUserFriends = async(req,res) => {
+export const getUserFriends = async (req, res) => {
     const { id } = req.params;
     if (!id) {
         throw new Error("please provide an id");
@@ -30,29 +30,39 @@ export const getUserFriends = async(req,res) => {
     })
 }
 
-export const updateUserRelationship = async(req,res) => {
+export const updateUserRelationship = async (req, res) => {
     const { id, friendID } = req.params;
-    if(!id || friendID){
-        throw new Error ("Please provide ids");
+    if (!id || !friendID) {
+        throw new Error("Please provide ids");
     }
-    const currentUser = await User.findById(id);   
-    const userFromRelationship = await User.findById(friendID);  
-    if(!currentUser || !userFromRelationship){
-        throw new Error ("User not found");
+    const currentUser = await User.findById(id);
+    const userFromRelationship = await User.findById(friendID);
+    if (!currentUser || !userFromRelationship) {
+        throw new Error("User not found");
     }
     const friendsArray = [...currentUser.friends];
-    const alreadyFriends = friendsArray.some(friend => friend.id == friendID);
-    if(!alreadyFriends){
+    const alreadyFriends = friendsArray.some(friend => String(friend._id) == friendID);
+    // let alreadyFriends;
+    //     for(const friend of currentUser.friends){
+    //         console.log(String(friend._id));
+    //     }
+
+    // res.status(200).json({
+    //     friends: currentUser.friends
+    // })
+
+
+    if (!alreadyFriends) {
         // add friend
         currentUser.friends.push(friendID);
     }
-    if(alreadyFriends){
+    if (alreadyFriends) {
         // remove friend
-        currentUser.friends.filter(friend => friend.id !== friendID);
+        const index = currentUser.friends.findIndex(friend => String(friend._id) == friendID);
+        currentUser.friends.splice(1,index);
     }
     await currentUser.save();
     res.status(StatusCodes.OK).json({
         friends: currentUser.friends
     })
-    
 }
