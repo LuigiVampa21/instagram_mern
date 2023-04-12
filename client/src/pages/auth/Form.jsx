@@ -25,7 +25,7 @@ const registerSchema = yup.object().shape({
     password: yup.string().required("required"),
     location: yup.string().required("required"),
     occupation: yup.string().required("required"),
-    picture: yup.string().required("required"),
+    picture: yup.string(),
 });
 
 const loginSchema = yup.object().shape({
@@ -65,7 +65,6 @@ const Form = props => {
     const login = async (values, onSubmitProps) => {
         try {
             const response = await axios.post(process.env.REACT_APP_BASE_URL + '/auth/login', values);
-            console.log(response);
             const { data } = response;
             onSubmitProps.resetForm();
             dispatch(setLogin({
@@ -83,7 +82,9 @@ const Form = props => {
         for (let value in values) {
             formData.append(value, values[value]);
         }
-        formData.append("picturePath", values.picture.name);
+        if (values.picture.name) {
+            formData.append("picturePath", values.picture.name);
+        }
         try {
             const response = await axios.post(process.env.REACT_APP_BASE_URL + '/auth/register', formData);
             const { data } = response;

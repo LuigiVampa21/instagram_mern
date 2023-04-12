@@ -30,11 +30,9 @@ const UserWidget = ({userID, picturePath }) => {
                     Authorization: `Bearer ${token}`
                 }
             })
-            console.log(response);
             const {data} = response;
             const {user} = data;
             setUser({...user});
-            console.log(user);
         } catch (err) {
             console.log(err);
         }

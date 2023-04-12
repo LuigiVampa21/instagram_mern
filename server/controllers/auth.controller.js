@@ -15,8 +15,10 @@ export const register = async (req, res) => {
     location,
     occupation,
   } = req.body;
-
-  const picturePath = file.filename
+  let picturePath = "default.jpg";
+  if(file){
+    picturePath = file.filename
+  }
 
   const hashedPassword = await hashPassword(password);
 
@@ -39,10 +41,10 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   const { email, password } = req.body;
   const _user = await User.findOne({ email }).select('+password');
-  if (!user) {
+  if (!_user) {
     throw new Error("This user does not exists");
   }
-  const match = await isMatch(password, user.password);
+  const match = await isMatch(password, _user.password);
   if (!match) {
     throw new Error("This password does not match");
   }
@@ -50,6 +52,7 @@ export const login = async (req, res) => {
   const token = generateToken({ id: _user.id, email: _user.email });
 
   const user = {
+    _id: _user.id,
     firstName: _user.firstName,
     lastName: _user.lastName,
     email: _user.email,

@@ -33,9 +33,7 @@ export const getCurrentUserPosts = async (req, res) => {
 
 export const createPost = async (req, res) => {
     const { id } = req.params;
-    console.log(id);
     const user = await User.findById(id);
-    console.log(user);
     if (!user) {
         throw new Error("This user does not exists");
     }
@@ -63,7 +61,7 @@ export const createPost = async (req, res) => {
 
 export const getFeedPosts = async (req, res) => {
     // const feedPosts = [];
-    const feedPosts = await Post.findAll();
+    const feedPosts = await Post.find().populate('user', {_id: 1, firstName: 1, lastName: 1, picturePath: 1});
     return res.status(StatusCodes.OK).json({
         feedPosts
     })

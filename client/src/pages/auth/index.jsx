@@ -33,7 +33,7 @@ const AuthPage = () => {
         backgroundColor={theme.palette.background.alt}
       >
         <Typography fontWeight="500" variant="h5" sx={{ mb: "1.5rem" }}>
-          {pageType === "login" ? "Login" : "Register"}
+          {pageType === "login" ? "Register" : "Login"}
         </Typography>
         <Form onChangeType={onChangeType}/>
       </Box>
