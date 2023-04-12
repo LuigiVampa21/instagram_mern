@@ -7,7 +7,6 @@ const PostsWidget = ({ userID, isProfile = false }) => {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.posts);
   const token = useSelector((state) => state.token);
-  console.log(posts);
 
   const getPosts = () => {
     dispatch(getFeedPosts(token));

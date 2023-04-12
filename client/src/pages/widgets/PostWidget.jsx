@@ -5,15 +5,17 @@ import {
     ShareOutlined,
 } from "@mui/icons-material";
 import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
+import axios from "axios";
 import FlexBetween from "components/FlexBetween";
 //   import Friend from "components/Friend";
 import WidgetWrapper from "components/WidgetWrapper";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 // import { setPost } from "state";
 
 const PostWidget =
-// (
+    // (
     // {
     //     postId,
     //     postUserId,
@@ -25,16 +27,14 @@ const PostWidget =
     //     likes,
     //     comments,
     // }
-// )
- ({post}) => {
+    // )
+    ({ post }) => {
         const [isComments, setIsComments] = useState(false);
         const dispatch = useDispatch();
         const token = useSelector((state) => state.token);
         const loggedInUserId = useSelector((state) => state.user._id);
-        // const isLiked = Boolean(post.likes[loggedInUserId]);
-        // const likeCount = Object.keys(post.likes).length;
-
-        // console.log(post);
+        const isLiked = post.likes.some(like => like == loggedInUserId);
+        const likeCount = post.likes.length;
 
         const { palette } = useTheme();
         const main = palette.neutral.main;
@@ -51,6 +51,21 @@ const PostWidget =
             //   });
             //   const updatedPost = await response.json();
             //   dispatch(setPost({ post: updatedPost }));
+            try {
+                const response = await axios.patch(
+                    process.env.REACT_APP_BASE_URL + '/posts/' + id + '/user',
+                    { userID },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            "Content-Type": "application/json",
+                        }
+                    })
+                const { data: userPosts } = response;
+                console.log(userPosts);
+            } catch (err) {
+                console.log(err);
+            }
         };
 
         return (
@@ -64,18 +79,18 @@ const PostWidget =
                 <Typography color={main} sx={{ mt: "1rem" }}>
                     {post.description}
                 </Typography>
-                {post.user.picturePath && (
+                {post.picturePath && (
                     <img
                         width="100%"
                         height="auto"
                         alt="post"
                         style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
-                        src={`http://localhost:3001/assets/${post.user.picturePath}`}
+                        src={`${process.env.REACT_APP_STATIC_URL}/${post.picturePath}`}
                     />
                 )}
                 <FlexBetween mt="0.25rem">
                     <FlexBetween gap="1rem">
-                        {/* <FlexBetween gap="0.3rem">
+                        <FlexBetween gap="0.3rem">
                             <IconButton onClick={patchLike}>
                                 {isLiked ? (
                                     <FavoriteOutlined sx={{ color: primary }} />
@@ -84,7 +99,7 @@ const PostWidget =
                                 )}
                             </IconButton>
                             <Typography>{likeCount}</Typography>
-                        </FlexBetween> */}
+                        </FlexBetween>
 
                         {/* <FlexBetween gap="0.3rem">
                             <IconButton onClick={() => setIsComments(!isComments)}>

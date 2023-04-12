@@ -88,7 +88,6 @@ const Form = props => {
         try {
             const response = await axios.post(process.env.REACT_APP_BASE_URL + '/auth/register', formData);
             const { data } = response;
-            console.log(data);
             onSubmitProps.resetForm();
             setPageType("login");
             props.onChangeType();

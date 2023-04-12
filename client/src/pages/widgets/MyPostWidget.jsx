@@ -40,6 +40,8 @@ const MyPostWidget = ({ picturePath }) => {
     const medium = palette.neutral.medium;
 
 
+
+
     const handlePost = () => {
         const formData = new FormData();
         formData.append("description", post);
@@ -48,6 +50,9 @@ const MyPostWidget = ({ picturePath }) => {
             formData.append("picturePath", image.name);
         }
         dispatch(sendPost(_id, formData, token));
+        setPost("");
+        setImage(null);
+        setIsImage(false);
     }
 
     return (
