@@ -5,7 +5,6 @@ import { isMatch } from '../utils/auth/passwordMatch.js';
 import { generateToken } from '../utils/auth/generateToken.js';
 
 export const register = async (req, res) => {
-  const file = req.files[0];
   const {
     firstName,
     lastName,
@@ -15,8 +14,11 @@ export const register = async (req, res) => {
     location,
     occupation,
   } = req.body;
+
   let picturePath = "default.jpg";
-  if(file){
+  
+  if(req.file){
+    const file = req.files[0];
     picturePath = file.filename
   }
 

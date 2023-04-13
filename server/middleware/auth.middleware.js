@@ -7,11 +7,11 @@ export const checkToken = async (req, res, next) => {
         if(!token){
             throw new Error("Sorry no token found");
         }
-        const isValid = jwt.verify(token, process.env.JWT_SECRET);
-        if(!isValid){
+        const payload = jwt.verify(token, process.env.JWT_SECRET);
+        if(!payload){
             throw new Error("Token not valid or expired");
         }
-        req.user = isValid;
+        req.user = payload;
         next();
     } catch (err) {
         res.status(StatusCodes.UNAUTHORIZED).json({
