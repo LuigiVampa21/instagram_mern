@@ -6,7 +6,7 @@ import {
 } from "@mui/icons-material";
 import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
-//   import Friend from "components/Friend";
+import Friend from "components/Friend";
 import WidgetWrapper from "components/WidgetWrapper";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -32,39 +32,37 @@ const PostWidget =
         const [isComments, setIsComments] = useState(false);
         const dispatch = useDispatch();
         const token = useSelector((state) => state.token);
-        const loggedInUserId = useSelector((state) => state.user._id);
-        const [isLiked, setIsLiked] = useState(post.likes.some(like => like == loggedInUserId));
+        const user = useSelector((state) => state.user);
+        const [isLiked, setIsLiked] = useState(post.likes.some(like => like == user._id));
         const [likeCount, setLikeCount] = useState(post.likes.length);
-        // const like = like => like == loggedInUserId
-        // setIsLiked(post.likes.some(like => like == loggedInUserId));
-        // const likeCount = post.likes.length;
 
         const { palette } = useTheme();
         const main = palette.neutral.main;
         const primary = palette.primary.main;
 
         const patchLike = async () => {
-            if(!isLiked){
+            if (!isLiked) {
                 setIsLiked(true);
                 const newCount = likeCount + 1;
                 setLikeCount(newCount);
             }
-            if(isLiked){
+            if (isLiked) {
                 setIsLiked(false);
-                const newCount = likeCount - 1; 
+                const newCount = likeCount - 1;
                 setLikeCount(newCount);
             }
-            dispatch(_patchLike(post._id, loggedInUserId, token));
+            dispatch(_patchLike(post._id, user._id, token));
         };
 
         return (
             <WidgetWrapper m="2rem 0">
-                {/* <Friend
-          friendId={postUserId}
-          name={name}
-          subtitle={location}
-          userPicturePath={userPicturePath}
-        /> */}
+                <Friend
+                    friendID={post.user._id}
+                    name={`${post.user.firstName} ${post.user.lastName}`}
+                    subtitle={post.location}
+                    userPicturePath={post.user.picturePath}
+                    size={"35px"}
+                />
                 <Typography color={main} sx={{ mt: "1rem" }}>
                     {post.description}
                 </Typography>

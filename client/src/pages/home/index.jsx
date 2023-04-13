@@ -6,6 +6,8 @@ import UserWidget from 'pages/widgets/UserWidget';
 import FriendListWidget from 'pages/widgets/FriendListWidget';
 import React from 'react'
 import { useSelector } from 'react-redux';
+import AdvertWidget from 'pages/widgets/AdvertWidget';
+
 
 
 
@@ -38,7 +40,7 @@ const HomePage = () => {
         </Box>
         {isNonMobileScreens && (
           <Box flexBasis="26%">
-            {/* <AdvertWidget /> */}
+            <AdvertWidget />
             <Box m="2rem 0" />
             <FriendListWidget userID={_id} />
           </Box>

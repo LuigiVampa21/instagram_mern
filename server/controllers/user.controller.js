@@ -26,6 +26,7 @@ export const getUserFriends = async (req, res) => {
         throw new Error("no user found with that id");
     }
     res.status(StatusCodes.OK).json({
+        count: user.friends.length,
         friends: user.friends
     })
 }
@@ -57,6 +58,7 @@ export const updateUserRelationship = async (req, res) => {
     const user = await User.findById(id).populate('friends');
 
     res.status(StatusCodes.OK).json({
+        count: user.friends.length,
         friends: user.friends
     })
 }
