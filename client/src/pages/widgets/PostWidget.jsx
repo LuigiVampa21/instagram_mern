@@ -11,25 +11,20 @@ import WidgetWrapper from "components/WidgetWrapper";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { _patchLike } from "state/post-actions";
+import CommentCard from "components/CommentCard";
+import CommentInput from "components/CommentInput";
+// import EditIcon from '@mui/icons-material/Edit';
+import SendIcon from '@mui/icons-material/Send';
+import { headersConfig } from "utils/headers";
+import axios from "axios";
 
-// import { setPost } from "state";
+// import { sendComment } from "state/post-actions";
 
 const PostWidget =
-    // (
-    // {
-    //     postId,
-    //     postUserId,
-    //     name,
-    //     description,
-    //     location,
-    //     picturePath,
-    //     userPicturePath,
-    //     likes,
-    //     comments,
-    // }
-    // )
     ({ post }) => {
+        // console.log(post);
         const [isComments, setIsComments] = useState(false);
+        const [isEditting, setIsEditting] = useState(false);
         const dispatch = useDispatch();
         const token = useSelector((state) => state.token);
         const user = useSelector((state) => state.user);
@@ -39,6 +34,8 @@ const PostWidget =
         const { palette } = useTheme();
         const main = palette.neutral.main;
         const primary = palette.primary.main;
+
+        const comments = [...post.comments];
 
         const patchLike = async () => {
             if (!isLiked) {
@@ -53,6 +50,29 @@ const PostWidget =
             }
             dispatch(_patchLike(post._id, user._id, token));
         };
+
+        const handleCancelComment = () => {
+            setIsEditting(false);
+        }
+
+        const handleSendComment = comment => {
+            sendComment(post._id, user._id, comment, token)
+        }
+
+        const sendComment = async (postID, userID, content, token) => {
+            try {
+                const response = await axios.post(process.env.REACT_APP_BASE_URL + '/comments/' + postID, {
+                    userID,
+                    content
+                }, headersConfig(token));
+                const { data } = response;
+                const { comment } = data;
+                comments = [...post.comments, comment]
+                console.log(comments);
+            } catch (err) {
+                console.log(err);
+            }
+        }
 
         return (
             <WidgetWrapper m="2rem 0">
@@ -88,12 +108,12 @@ const PostWidget =
                             <Typography>{likeCount}</Typography>
                         </FlexBetween>
 
-                        {/* <FlexBetween gap="0.3rem">
+                        <FlexBetween gap="0.3rem">
                             <IconButton onClick={() => setIsComments(!isComments)}>
                                 <ChatBubbleOutlineOutlined />
                             </IconButton>
                             <Typography>{post.comments.length}</Typography>
-                        </FlexBetween> */}
+                        </FlexBetween>
                     </FlexBetween>
 
                     <IconButton>
@@ -102,13 +122,17 @@ const PostWidget =
                 </FlexBetween>
                 {isComments && (
                     <Box mt="0.5rem">
-                        {post.comments.map((comment, i) => (
-                            <Box key={i}>
+                        {!isEditting && <FlexBetween mb="0.4rem">
+                            <Box></Box>
+                            <SendIcon onClick={() => setIsEditting(!isEditting)} />
+                        </FlexBetween>}
+                        {isEditting && <CommentInput picturePath={user.picturePath} onCancelComment={handleCancelComment} onSendComment={handleSendComment} />}
+                        {/* {post.comments.map((comment, i) => ( */}
+                        {comments.map((comment, i) => (
+                            <>
                                 <Divider />
-                                <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
-                                    {comment}
-                                </Typography>
-                            </Box>
+                                <CommentCard key={i} comment={comment} currentUser={user._id} />
+                            </>
                         ))}
                         <Divider />
                     </Box>

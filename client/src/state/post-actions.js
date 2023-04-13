@@ -1,13 +1,14 @@
 import axios from 'axios';
 import { setPost, setPosts } from './index';
 
-const headersConfig = token => {
-    return {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    }
-}
+// const headersConfig = token => {
+//     return {
+//         headers: {
+//             Authorization: `Bearer ${token}`
+//         }
+//     }
+// }
+import { headersConfig } from 'utils/headers';
 
 export const sendPost = (id, post, token) => {
     return async dispatch => {
@@ -32,7 +33,7 @@ export const _patchLike = (id, userID, token) => {
             console.log(err);
         }
     }
-} 
+}
 
 export const getFeedPosts = (token) => {
     return async dispatch => {
@@ -41,6 +42,7 @@ export const getFeedPosts = (token) => {
             const { data } = response;
             const { feedPosts } = data;
             const posts = [...feedPosts];
+            // console.log(posts);
             dispatch(setPosts({ posts }))
         } catch (err) {
             console.log(err);
@@ -60,3 +62,18 @@ export const _getUserPosts = (id, token) => {
         }
     }
 }
+
+// export const sendComment = (postID, userID, content, token) => {
+//     return async dispatch => {
+//         try {
+//             const response = await axios.post(process.env.REACT_APP_BASE_URL + '/comments/' + postID, {
+//                 userID,
+//                 content
+//             }, headersConfig(token));
+//             const { data } = response;
+//             console.log(data);
+//         } catch (err) {
+//             console.log(err);
+//         }
+//     }
+// }

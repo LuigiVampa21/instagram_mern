@@ -82,7 +82,7 @@ const Form = props => {
         for (let value in values) {
             formData.append(value, values[value]);
         }
-        if (values.picture.name) {
+        if (values.picture) {
             formData.append("picturePath", values.picture.name);
         }
         try {

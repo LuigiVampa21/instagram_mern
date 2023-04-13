@@ -76,6 +76,7 @@ export const postComment = async (req, res) => {
     await _post.save();
 
     res.status(StatusCodes.OK).json({
+        comment,
         _post
     })
 }
@@ -91,7 +92,7 @@ export const updateComment = async (req, res) => {
         throw new Error('no comment found')
     }
     const comment = await Comment.findByIdAndUpdate(id, {
-        content
+        description: content
     });
     if (!comment) {
         throw new Error('no comment found')

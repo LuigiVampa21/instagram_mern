@@ -17,6 +17,8 @@ const Friend = ({ size, friendID, name, subtitle, userPicturePath }) => {
   const primaryDark = palette.primary.dark;
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
+  const fontWeight = size === '15px' ? '400' : '500';
+  const fontSize = size === '15px' ? '12px' : '15px';
 
   const isFriend = friends.find((friend) => friend._id === friendID);
   const isSelf = friendID === _id;
@@ -38,7 +40,8 @@ const Friend = ({ size, friendID, name, subtitle, userPicturePath }) => {
           <Typography
             color={main}
             variant="h5"
-            fontWeight="500"
+            fontWeight={fontWeight}
+            fontSize={fontSize}
             sx={{
               "&:hover": {
                 color: palette.primary.light,
@@ -53,7 +56,7 @@ const Friend = ({ size, friendID, name, subtitle, userPicturePath }) => {
           </Typography>
         </Box>
       </FlexBetween>
-      {isSelf ? (<></>)
+      {isSelf || size == "15px" ? (<></>)
         :
         <IconButton
           onClick={() => patchFriend()}
@@ -65,7 +68,8 @@ const Friend = ({ size, friendID, name, subtitle, userPicturePath }) => {
               <PersonRemoveOutlined sx={{ color: primaryDark }} />
             ) : (
               <PersonAddOutlined sx={{ color: primaryDark }} />
-            )}
+            )
+          }
         </IconButton>
       }
     </FlexBetween>

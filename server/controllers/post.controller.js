@@ -61,7 +61,16 @@ export const createPost = async (req, res) => {
 
 export const getFeedPosts = async (req, res) => {
     // const feedPosts = [];
-    const feedPosts = await Post.find().populate('user', {_id: 1, firstName: 1, lastName: 1, picturePath: 1});
+    // const feedPosts = await Post.find().populate('user', {_id: 1, firstName: 1, lastName: 1, picturePath: 1});
+    // const feedPosts = await Post.find().populate('user comments');
+    // const feedPosts = await Post.find().populate([{path: 'user',  select: ['_id', 'firstName', 'lastName', 'picturePath']}, {path: 'comments', select: ['_id', 'content', 'user']}]);
+    const feedPosts = await Post.find().populate('user').populate({
+        path: 'comments',
+        populate: {
+            path: 'user',
+            model: 'User'
+        }
+    });
     return res.status(StatusCodes.OK).json({
         feedPosts
     })
