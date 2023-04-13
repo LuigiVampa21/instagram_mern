@@ -14,7 +14,6 @@ export const sendPost = (id, post, token) => {
         try {
             const response = await axios.post(process.env.REACT_APP_BASE_URL + '/posts/' + id, post, headersConfig(token));
             const { data: newPost } = response;
-            // console.log(newPost);
             dispatch(setPost({ post: newPost }));
         } catch (err) {
             console.log(err);

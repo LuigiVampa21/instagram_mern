@@ -50,10 +50,13 @@ export const updateUserRelationship = async (req, res) => {
     if (alreadyFriends) {
         // remove friend
         const index = currentUser.friends.findIndex(friend => String(friend._id) == friendID);
-        currentUser.friends.splice(1,index);
+        currentUser.friends.splice(index, 1);
     }
     await currentUser.save();
+
+    const user = await User.findById(id).populate('friends');
+
     res.status(StatusCodes.OK).json({
-        friends: currentUser.friends
+        friends: user.friends
     })
 }

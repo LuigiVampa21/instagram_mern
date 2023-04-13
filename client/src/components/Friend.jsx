@@ -18,10 +18,12 @@ const Friend = ({ friendID, name, subtitle, userPicturePath }) => {
   const primaryDark = palette.primary.dark;
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
+  // console.log(_id);
+  // console.log(friendID);
 
   const isFriend = friends.find((friend) => friend._id === friendID);
 
-  const patchFriend = async () => {
+  const patchFriend = () => {
     dispatch(_patchFriend(_id, friendID, token))
     // const response = await fetch(
     //   `http://localhost:3001/users/${_id}/${friendID}`,
