@@ -20,6 +20,7 @@ export const getPostComments = async (req, res) => {
     })
 
 }
+
 export const getAllComments = async (req, res) => {
     const comments = await Comment.find();
 
@@ -34,7 +35,7 @@ export const getComment = async (req, res) => {
     if (!id) {
         throw new Error('no post found')
     }
-    const comment = await Comment.findById(id).populate('comments');
+    const comment = await Comment.findById(id);
     if (!comment) {
         throw new Error('no comment found')
     }
@@ -92,30 +93,21 @@ export const updateComment = async (req, res) => {
         throw new Error('no comment found')
     }
     const comment = await Comment.findByIdAndUpdate(id, {
-        description: content
+        content
+    }, {
+        new: true
     });
     if (!comment) {
         throw new Error('no comment found')
     }
-    const post = await Post.findById(comment.post._id);
 
     // For production
     // if (userID !== req.user.id) {
     //     throw new Error('Can not update comment for this user')
     // }
 
-
-    // const postID = comment.post._id;
-    // const post = await Post.findById(postID);
-    // const newPostComments  = [...post.comments].filter(comment => String(comment._id) !== id);
-    // await post.updateOne({
-    //     comments: [...newPostComments]
-    // })
-    // await post.save();
-
     res.status(200).json({
         comment,
-        post
     })
 }
 
@@ -138,6 +130,6 @@ export const deleteComment = async (req, res) => {
     await post.save();
 
     res.status(200).json({
-        newPostComments
+        newPostComments,
     })
 }

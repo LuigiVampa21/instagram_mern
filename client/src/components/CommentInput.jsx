@@ -8,9 +8,9 @@ import CancelIcon from '@mui/icons-material/Cancel';
 
 
 
-const CommentInput = ({ picturePath, onCancelComment, onSendComment }) => {
+const CommentInput = ({ picturePath, onCancelComment, onSendComment, mt="0.5rem", value="" }) => {
 
-    const [comment, setComment] = useState();
+    const [comment, setComment] = useState(value);
     const { palette } = useTheme();
 
     const handlePostComment = () => {
@@ -23,8 +23,8 @@ const CommentInput = ({ picturePath, onCancelComment, onSendComment }) => {
     }
 
     return (
-        <FlexBetween gap="1.5rem" mt="0.5rem" mb="0.7rem" >
-            <UserImage image={picturePath} size={"20px"} />
+        <FlexBetween gap="1.5rem" mt={mt} mb="0.7rem" >
+            {picturePath && <UserImage image={picturePath} size={"20px"} />}
             <InputBase
                 placeholder="What's on your mind..."
                 onChange={(e) => setComment(e.target.value)}
@@ -39,11 +39,13 @@ const CommentInput = ({ picturePath, onCancelComment, onSendComment }) => {
             />
             <Box>
                 <FlexBetween>
-                    <IconButton disabled={!comment} >
-                        <SendIcon style={{ fontSize: 15 }} onClick={handlePostComment} />
+                    <IconButton disabled={!comment} onClick={handlePostComment} >
+                        <SendIcon style={{ fontSize: 15 }} />
                     </IconButton>
                     &nbsp; &nbsp;
-                    <CancelIcon style={{ fontSize: 15 }} onClick={handleCancelComment} />
+                    <IconButton onClick={handleCancelComment}>
+                        <CancelIcon style={{ fontSize: 15 }} />
+                    </IconButton>
                 </FlexBetween>
             </Box>
         </FlexBetween>

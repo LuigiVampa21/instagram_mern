@@ -29,6 +29,10 @@ export const authSlice = createSlice({
         },
         setPosts: (state, action) => {
             state.posts = action.payload.posts;
+            console.log("--------------- SET POSTS -------------------");
+            console.log(action.payload.posts[0].comments[0].content);
+            console.log(state.posts[0].comments[0].content);
+            console.log("--------------- END SET POSTS -------------------");
         },
         setPost: (state, action) => {
             const updatedPost = state.posts.map(post => {
