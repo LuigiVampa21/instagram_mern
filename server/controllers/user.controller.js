@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import { StatusCodes } from "http-status-codes";
+import { eliminateDuplicate } from "../utils/query/duplicate.js";
 
 
 export const getUserById = async (req, res) => {
@@ -60,5 +61,37 @@ export const updateUserRelationship = async (req, res) => {
     res.status(StatusCodes.OK).json({
         count: user.friends.length,
         friends: user.friends
+    })
+}
+
+export const getSearchUserList = async(req,res) => {
+    const { value } = req.body;
+    const _queries = value.split(' ');
+    // if(queryLength >)
+    let users = [];
+    
+    const queries = [..._queries].filter(query => query !== '');
+    const queryLength = queries.length;
+    if(queryLength === 1){
+        const name = value.trim();
+        const nameRegex = new RegExp(name, 'i');
+        const nameFilter = { $or: [ { firstName: nameRegex }, { lastName: nameRegex } ] };
+        users = await User.find(nameFilter);
+    }else{
+        let _usersFilled = [];
+        for(const query of queries){
+            const nameRegex = new RegExp(query, 'i');
+            const nameFilter = { $or: [ { firstName: nameRegex }, { lastName: nameRegex } ] };
+            const _users = await User.find(nameFilter);
+            _usersFilled = [...users, ..._users];
+        }
+        users = eliminateDuplicate(_usersFilled);
+    }
+
+    res.status(StatusCodes.OK).json({
+        count: users.length,
+        users,
+        queries,
+        queryLength
     })
 }

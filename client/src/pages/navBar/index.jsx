@@ -10,8 +10,9 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
+
 import {
-  Search,
+  // Search,
   Message,
   DarkMode,
   LightMode,
@@ -24,8 +25,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { setMode, setLogout } from "state";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
+import SearchBar from "components/SearchBar";
 
-const NavBar = () => {
+const NavBar = ({onSearch}) => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -40,6 +42,10 @@ const NavBar = () => {
   const alt = theme.palette.background.alt;
 
   const fullName = `${user?.firstName} ${user?.lastName}`;
+
+  const handleSearch = (value) => {
+    onSearch(value)
+  }
 
   return (
     <FlexBetween padding="1rem 6%" backgroundColor={alt}>
@@ -58,19 +64,7 @@ const NavBar = () => {
         >
           Instagram
         </Typography>
-        {isNonMobileScreens && (
-          <FlexBetween
-            backgroundColor={neutralLight}
-            borderRadius="9px"
-            gap="3rem"
-            padding="0.1rem 1.5rem"
-          >
-            <InputBase placeholder="Search..." />
-            <IconButton>
-              <Search />
-            </IconButton>
-          </FlexBetween>
-        )} 
+        <SearchBar onSearch={handleSearch} />
       </FlexBetween>
             {/* DESKTOP NAV */}
             {isNonMobileScreens ? (

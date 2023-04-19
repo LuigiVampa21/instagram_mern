@@ -5,6 +5,7 @@ const initialState = {
     user: null,
     token: null,
     posts: [],
+    searchArray: []
 }
 
 export const authSlice = createSlice({
@@ -29,10 +30,6 @@ export const authSlice = createSlice({
         },
         setPosts: (state, action) => {
             state.posts = action.payload.posts;
-            console.log("--------------- SET POSTS -------------------");
-            console.log(action.payload.posts[0].comments[0].content);
-            console.log(state.posts[0].comments[0].content);
-            console.log("--------------- END SET POSTS -------------------");
         },
         setPost: (state, action) => {
             const updatedPost = state.posts.map(post => {
@@ -41,6 +38,10 @@ export const authSlice = createSlice({
             })
             state.posts = updatedPost;
             // state.posts = [action.payload.post, ...state.posts]
+        },
+        setSearchArray: (state, action) => {
+            // const _searchArray = action.payload.users;
+            state.searchArray = action.payload.users;
         }
     }
 })
