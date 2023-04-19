@@ -67,7 +67,6 @@ export const updateUserRelationship = async (req, res) => {
 export const getSearchUserList = async(req,res) => {
     const { value } = req.body;
     const _queries = value.split(' ');
-    // if(queryLength >)
     let users = [];
     
     const queries = [..._queries].filter(query => query !== '');

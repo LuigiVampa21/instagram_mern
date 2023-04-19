@@ -5,10 +5,10 @@ import PostsWidget from 'pages/widgets/PostsWidget';
 import UserWidget from 'pages/widgets/UserWidget';
 import FriendListWidget from 'pages/widgets/FriendListWidget';
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AdvertWidget from 'pages/widgets/AdvertWidget';
-import UserList from 'pages/list';
 import { useNavigate } from 'react-router-dom';
+import { getUserList } from 'state/search-actions';
 
 
 
@@ -16,16 +16,18 @@ import { useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [isSearching, setIsSearching] = useState(false);
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
   const { _id, picturePath } = useSelector(state => state.user);
-  // const user = useSelector(state => state.user);
+  const token = useSelector(state => state.token);
 
   const handleSearch = value => {
     console.log(value);
     setIsSearching(true);
-    navigate('/users')
+    dispatch(getUserList(value, token))
+    navigate('/users');
   }
 
   return (

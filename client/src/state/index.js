@@ -41,10 +41,12 @@ export const authSlice = createSlice({
         },
         setSearchArray: (state, action) => {
             // const _searchArray = action.payload.users;
-            state.searchArray = action.payload.users;
+            console.log(action.payload.users);
+            state.searchArray = [...action.payload.users];
+            console.log(state.searchArray);
         }
     }
 })
 
-export const { setMode, setFriends, setLogin, setPost, setPosts, setLogout } = authSlice.actions;
+export const { setMode, setFriends, setLogin, setPost, setPosts, setLogout, setSearchArray } = authSlice.actions;
 export default authSlice.reducer;

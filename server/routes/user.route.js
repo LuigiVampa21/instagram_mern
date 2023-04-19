@@ -4,7 +4,7 @@ import { getUserById, getUserFriends, updateUserRelationship, getSearchUserList 
 const router = express.Router();
 
 
-router.route('/search').get(getSearchUserList)
+router.route('/search').post(getSearchUserList)
 router.route('/:id').get(getUserById);
 router.route('/:id/friends').get(getUserFriends);
 router.route('/:id/:friendID').patch(updateUserRelationship);

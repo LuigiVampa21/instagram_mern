@@ -3,16 +3,25 @@ import Friend from 'components/Friend'
 import WidgetWrapper from 'components/WidgetWrapper'
 import NavBar from 'pages/navBar'
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { getUserList } from 'state/search-actions'
 
 
 const UserList = () => {
-    const users = [];
+    const dispatch = useDispatch()
+    const users = useSelector(state => state.searchArray);
+    const token = useSelector(state => state.token);
     const theme = useTheme();
     const { palette } = theme;
     const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
+
+    const handleSearch = value => {
+        dispatch(getUserList(value, token))
+      }
+
     return (
         <Box>
-            <NavBar />
+            <NavBar onSearch={handleSearch}/>
             <Box
                 width="100%"
                 padding="2rem"
@@ -29,7 +38,7 @@ const UserList = () => {
                     >
                         User List
                     </Typography>
-                    {users.length > 0 && <Box display="flex" flexDirection="column" gap="1.5rem">
+                    {users?.length > 0 && <Box display="flex" flexDirection="column" gap="1.5rem">
                         {users?.map((user, i) => (
                             <Friend
                                 key={i}
@@ -41,7 +50,7 @@ const UserList = () => {
                         ))}
                     </Box>}
 
-                    {users.length === 0 &&
+                    {users?.length === 0 &&
                         <Box
                             width="100%"
                             padding="2rem"
